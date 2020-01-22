@@ -2,16 +2,18 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { validate, ValidationError } from 'class-validator';
 import * as moment from 'moment';
 import { EOL } from 'os';
-import { ValueError } from 'src/common/error/ValueError';
-import { RetryableWorker } from 'src/common/retryable-worker';
 
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 
+import { ValueError } from '../../common/error/ValueError';
+import { RetryableWorker } from '../../common/retryable-worker';
 import { Rates } from '../../common/value-objects/rates.value-object';
 import { CurrencyAdapter } from '../currency.adapter';
 import { ExchangeRatesDto } from './exchange-rates.dto';
 
 const EXCHANGE_RATES_URL: string = 'https://api.exchangeratesapi.io/latest';
+export const DAILY_UPDATE_OFFSET_IN_HOURS: number = 16; // currencies are updated every day around 4:00 p.m. CET.
+export const UPDATE_TIMEZONE = 'Europe/Berlin'; // European Central Bank headquarters.
 
 @Injectable()
 export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
@@ -27,16 +29,23 @@ export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
       rates: new Map(Object.entries(data?.rates)),
       base: data?.base,
     });
-    const errors: ValidationError[] = await validate(exchangeRatesDto);
+    const errors: ValidationError[] = await validate(exchangeRatesDto, {
+      forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
+    });
 
     if (errors.length > 0) {
-      const messages = errors.map((error: ValidationError) => error.toString());
+      const messages = errors.map((error: ValidationError) =>
+        `Property ${error.property} experience the following issues. ${Object.values(error.constraints).join(', ')}`,
+      );
 
-      throw new ValueError(`Unexpected response from ${EXCHANGE_RATES_URL}. ${messages.join(', ')}`);
+      throw new ValueError(`Unexpected response from ${EXCHANGE_RATES_URL}. ${messages.join(' ')}`);
     }
 
     return new Rates(
-      moment(exchangeRatesDto.date, 'YYYY-MM-DD').toDate(),
+      moment(exchangeRatesDto.date, 'YYYY-MM-DD')
+        .add(DAILY_UPDATE_OFFSET_IN_HOURS, 'hours')
+        .toDate(),
       exchangeRatesDto.rates,
       exchangeRatesDto.base,
     );

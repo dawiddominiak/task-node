@@ -2,7 +2,7 @@ import { Currency } from './currency.enum';
 
 export class Rates {
   constructor(
-    private readonly date: Date,
+    public readonly date: Date,
     private readonly rates: Map<Currency, number>,
     private readonly base: Currency = Currency.EUR,
   ) { }
