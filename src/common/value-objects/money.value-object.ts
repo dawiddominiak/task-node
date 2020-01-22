@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { Currency } from 'src/common/value-objects/currency.enum';
 
-import { Rates } from './rates.value-object';
+import { Ratable } from './ratable';
 import { ValueObject } from './value-object';
 
 /**
@@ -43,7 +43,7 @@ export class Money extends ValueObject {
     )(amount);
   }
 
-  public static add(moneyList: Money[], rates: Rates, targetCurrency: Currency) {
+  public static add(moneyList: Money[], rates: Ratable, targetCurrency: Currency) {
     const amount: number = moneyList.reduce(
       (sum: number, money: Money) => sum + money.showAmontInDifferentCurrency(rates, targetCurrency),
       0,
@@ -59,7 +59,7 @@ export class Money extends ValueObject {
     )(factor);
   }
 
-  public showAmontInDifferentCurrency(rates: Rates, targetCurrency: Currency): number {
+  public showAmontInDifferentCurrency(rates: Ratable, targetCurrency: Currency): number {
     if (this.amount === 0) {
       return 0;
     }

@@ -1,6 +1,6 @@
+import { Rates } from '../../currency/rates.entity';
 import { Currency } from './currency.enum';
 import { Money } from './money.value-object';
-import { Rates } from './rates.value-object';
 
 describe('Money', () => {
   it('should create a Money object', () => {

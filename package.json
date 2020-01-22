@@ -20,9 +20,11 @@
   },
   "dependencies": {
     "@nestjs/common": "^6.0.0",
+    "@nestjs/config": "^0.1.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
     "@nestjs/schedule": "^0.1.1",
+    "@nestjs/typeorm": "^6.2.0",
     "@types/ramda": "^0.26.39",
     "class-validator": "^0.11.0",
     "moment": "^2.24.0",
@@ -30,7 +32,9 @@
     "ramda": "^0.26.1",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "sqlite3": "^4.1.1",
+    "typeorm": "^0.2.22"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",
@@ -39,6 +43,7 @@
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.12",
     "@types/node": "11.13.4",
+    "@types/sqlite3": "^3.1.6",
     "@types/supertest": "2.0.7",
     "jest": "24.7.1",
     "prettier": "1.17.0",

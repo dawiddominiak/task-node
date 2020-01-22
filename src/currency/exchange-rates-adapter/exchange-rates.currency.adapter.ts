@@ -7,8 +7,8 @@ import { HttpService, Injectable, Logger } from '@nestjs/common';
 
 import { ValueError } from '../../common/error/ValueError';
 import { RetryableWorker } from '../../common/retryable-worker';
-import { Rates } from '../../common/value-objects/rates.value-object';
 import { CurrencyAdapter } from '../currency.adapter';
+import { Rates } from '../rates.entity';
 import { ExchangeRatesDto } from './exchange-rates.dto';
 
 const EXCHANGE_RATES_URL: string = 'https://api.exchangeratesapi.io/latest';

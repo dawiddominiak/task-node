@@ -1,11 +1,11 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
-import { Rates } from '../common/value-objects/rates.value-object';
 import { CurrencyAdapter } from './currency.adapter';
 import {
   DAILY_UPDATE_OFFSET_IN_HOURS,
 } from './exchange-rates-adapter/exchange-rates.currency.adapter';
+import { Rates } from './rates.entity';
 
 @Injectable()
 export class CurrencyService implements OnModuleInit {

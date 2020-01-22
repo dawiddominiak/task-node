@@ -1,4 +1,4 @@
-import { Rates } from '../common/value-objects/rates.value-object';
+import { Rates } from './rates.entity';
 
 export interface CurrencyAdapter {
   getLatestRates(): Promise<Rates>;
