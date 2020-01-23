@@ -1,6 +1,6 @@
 import { IsIn, Matches, Validate } from 'class-validator';
 
-import { Currency } from '../../common/value-objects/currency.enum';
+import { Currency } from '../../common/value-object/currency.enum';
 import { AreRatesCorrect } from './rates.validator';
 
 export class ExchangeRatesDto {

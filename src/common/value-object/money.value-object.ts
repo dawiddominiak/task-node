@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Currency } from 'src/common/value-objects/currency.enum';
+import { Currency } from 'src/common/value-object/currency.enum';
 
 import { Ratable } from './ratable';
 import { ValueObject } from './value-object';

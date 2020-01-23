@@ -23,7 +23,7 @@ export class RetryableWorker<K> {
       repeatOptions: {
         limit: MAX_RETRIES,
         msDelayFactory: (approachCounter: number): number =>
-          Math.max(Math.pow(approachCounter, 2) * 200, 60 * 1000), // 200, 800, 1800, 3200, ..., 60000, 60000 etc.
+          Math.max((approachCounter ** 2) * 200, 60 * 1000), // 200, 800, 1800, 3200, ..., 60000, 60000 etc.
       },
       repeatCondition: (): boolean => true,
     };

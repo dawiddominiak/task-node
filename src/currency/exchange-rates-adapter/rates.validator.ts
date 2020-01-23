@@ -1,6 +1,6 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 
-import { Currency } from '../../common/value-objects/currency.enum';
+import { Currency } from '../../common/value-object/currency.enum';
 
 @ValidatorConstraint({ name: 'areRatesCorrect', async: false })
 export class AreRatesCorrect implements ValidatorConstraintInterface {

@@ -1,11 +1,13 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { validate, ValidationError } from 'class-validator';
 import * as moment from 'moment';
-import { EOL } from 'os';
+import {
+  determineIfErrorIsIn400Group,
+} from 'src/common/retryable-worker/deny-400-group.repeat-condition';
 
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 
-import { ValueError } from '../../common/error/ValueError';
+import { ValueError } from '../../common/error/value.error';
 import { RetryableWorker } from '../../common/retryable-worker';
 import { CurrencyAdapter } from '../currency.adapter';
 import { Rates } from '../rates.entity';
@@ -58,23 +60,7 @@ export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
         repeatOptions: {
           limit: 3,
         },
-        repeatCondition: (error: AxiosError) => {
-          const isAxiosError: boolean = error.isAxiosError;
-          const hasErrorCode: boolean = typeof error.code === 'string' || typeof error.code === 'number';
-          const errorCodeFrom4xxGroup: boolean = error.code?.toString().charAt(0) === '4';
-          const retryable = isAxiosError && hasErrorCode && !errorCodeFrom4xxGroup;
-
-          this.logger.warn(
-            `
-              Error ${error.code} during the fetch from ${EXCHANGE_RATES_URL}.${EOL}
-              ${ retryable ? 'Retrying' : 'Not retryable' }${EOL}
-              ${error.message}${EOL}
-              ${error.stack}
-            `,
-          );
-
-          return retryable;
-        },
+        repeatCondition: (error: AxiosError) => determineIfErrorIsIn400Group(error, this.logger),
       },
     );
   }

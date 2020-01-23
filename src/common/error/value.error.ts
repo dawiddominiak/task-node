@@ -1,3 +1,3 @@
-import { DomainError } from './DomainError';
+import { DomainError } from './domain.error';
 
 export class ValueError extends DomainError { }

@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { HttpService, Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { Currency } from '../../common/value-objects/currency.enum';
+import { Currency } from '../../common/value-object/currency.enum';
 import { ExchangeRatesCurrencyAdapter } from './exchange-rates.currency.adapter';
 
 import moment = require('moment');
