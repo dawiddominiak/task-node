@@ -1,6 +1,6 @@
 import { Ratable } from 'src/common/value-object/ratable';
 import { DateValueTransformer } from 'src/common/value-transformer/date.value-transformer';
-import { JSONValueTransformer } from 'src/common/value-transformer/json.value-transformer';
+import { MapValueTransformer } from 'src/common/value-transformer/map.value-transformer';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 import { Currency } from '../common/value-object/currency.enum';
@@ -16,7 +16,7 @@ export class Rates implements Ratable {
   })
   public readonly date: Date;
 
-  @Column({ type: 'text', transformer: new JSONValueTransformer() })
+  @Column({ type: 'text', transformer: new MapValueTransformer() })
   private readonly rates: Map<Currency, number>;
 
   @Column({ type: 'text' })
