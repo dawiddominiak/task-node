@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { HttpService, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { Currency } from '../../common/value-object/currency.enum';
@@ -11,7 +11,6 @@ async function getAdapterWithMockedHttp(mockedResponse: () => Promise<AxiosRespo
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       ExchangeRatesCurrencyAdapter,
-      Logger,
       {
         provide: HttpService,
         useValue: {

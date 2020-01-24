@@ -5,7 +5,7 @@ import {
   determineIfErrorIsIn400Group,
 } from 'src/common/retryable-worker/deny-400-group.repeat-condition';
 
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, Logger, LoggerService, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
 import { CurrencyAdapter } from './currency.adapter';
@@ -22,11 +22,14 @@ const RETRIES_LIMIT_OF_CURRENCIES_ADAPTER: number = 15;
 
 @Injectable()
 export class CurrencyService implements OnModuleInit {
+  private readonly logger: LoggerService;
+
   constructor(
     private readonly ratesRepository: RatesRepository,
-    private readonly logger: Logger,
     @Inject('CurrencyAdapter') private readonly currencyAdapter: CurrencyAdapter,
-  ) { }
+  ) {
+    this.logger = new Logger('CurrencyService');
+  }
 
   // It's important to ensure newest rates before application bootstrap.
   public async onModuleInit(): Promise<void> {
@@ -51,6 +54,7 @@ export class CurrencyService implements OnModuleInit {
 
     if (!latestRates || currentMoment.diff(latestRatesMoment, 'hours') >= 24) {
       const newestRates = await this.fetchNewestCurrencies(latestRates);
+      this.logger.log(`Rates from ${moment(newestRates.date).format('YYYY-MM-DD')} downloaded.`);
       this.ratesRepository.save(newestRates);
     }
   }
@@ -62,7 +66,7 @@ export class CurrencyService implements OnModuleInit {
       async () => {
         const newRates = await this.currencyAdapter.getLatestRates();
 
-        if (newRates.date.getTime() === oldRates.date.getTime()) {
+        if (oldRates && newRates.date.getTime() === oldRates?.date?.getTime()) {
           throw new RatesNotUpdatedError(`Rates not updated at ${new Date()}.`);
         }
 

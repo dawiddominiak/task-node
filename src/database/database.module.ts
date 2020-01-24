@@ -5,14 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => ({
-        type: 'sqlite',
-        database: ':memory:',
-        entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
-        synchronize: config.get<string>('DB_SYNC', 'false') === 'true',
-      }),
-      inject: [ConfigService],
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
+      synchronize: true,
     }),
   ],
 })

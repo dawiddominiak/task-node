@@ -5,7 +5,7 @@ import {
   determineIfErrorIsIn400Group,
 } from 'src/common/retryable-worker/deny-400-group.repeat-condition';
 
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { HttpService, Injectable, Logger, LoggerService } from '@nestjs/common';
 
 import { ValueError } from '../../common/error/value.error';
 import { RetryableWorker } from '../../common/retryable-worker';
@@ -19,10 +19,13 @@ export const UPDATE_TIMEZONE = 'Europe/Berlin'; // European Central Bank headqua
 
 @Injectable()
 export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
+  private readonly logger: LoggerService;
+
   constructor(
     private readonly httpService: HttpService,
-    private readonly logger: Logger,
-  ) {}
+  ) {
+    this.logger = new Logger('ExchangeRatesCurrencyAdapter');
+  }
 
   public async getLatestRates(): Promise<Rates> {
     const { data } = await this.fetchLatestData();

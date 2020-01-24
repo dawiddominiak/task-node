@@ -22,7 +22,7 @@ export class Money extends ValueObject {
   /**
    * Consider decimal type on productional database.
    */
-  @Column({ type: 'float8', name: 'price', nullable: false })
+  @Column({ type: 'float', name: 'price', nullable: false })
   public readonly amount: number;
 
   @Column({ type: 'text', nullable: false })
