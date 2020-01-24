@@ -29,6 +29,7 @@
     "class-validator": "^0.11.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
+    "nest-router": "^1.0.9",
     "ramda": "^0.26.1",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
