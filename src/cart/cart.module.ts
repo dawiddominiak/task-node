@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
 
-@Module({})
+import { ProductModule } from './product/product.module';
+
+@Module({
+  imports: [ProductModule],
+})
 export class CartModule {}

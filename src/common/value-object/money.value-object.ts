@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { Currency } from 'src/common/value-object/currency.enum';
+import { Column } from 'typeorm';
 
 import { Ratable } from './ratable';
 import { ValueObject } from './value-object';
@@ -18,14 +19,22 @@ import { ValueObject } from './value-object';
  * See more: https://martinfowler.com/eaaCatalog/money.html
  */
 export class Money extends ValueObject {
+  /**
+   * Consider decimal type on productional database.
+   */
+  @Column({ type: 'float8', name: 'price', nullable: false })
   public readonly amount: number;
+
+  @Column({ type: 'text', nullable: false })
+  public readonly currency: Currency;
 
   constructor(
     amount: number,
-    public readonly currency: Currency,
+    currency: Currency,
   ) {
     super();
     this.amount = Money.fixFloatingPointError(amount);
+    this.currency = currency;
   }
 
   public static multiply(money: Money, factor: number): Money {
