@@ -1,9 +1,9 @@
-import { Ratable } from 'src/common/value-object/ratable';
-import { DateValueTransformer } from 'src/common/value-transformer/date.value-transformer';
-import { MapValueTransformer } from 'src/common/value-transformer/map.value-transformer';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 import { Currency } from '../common/value-object/currency.enum';
+import { Ratable } from '../common/value-object/ratable';
+import { DateValueTransformer } from '../common/value-transformer/date.value-transformer';
+import { MapValueTransformer } from '../common/value-transformer/map.value-transformer';
 
 @Entity({
   withoutRowid: true,

@@ -1,6 +1,4 @@
-import { Currency } from 'src/common/value-object/currency.enum';
-import { Ratable } from 'src/common/value-object/ratable';
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Money } from '../../common/value-object/money.value-object';
 import { Cart } from '../cart.entity';
@@ -23,7 +21,7 @@ export class Product {
   private readonly description: string;
 
   @ManyToOne(type => Cart, cart => cart.products)
-  public readonly cart: Cart;
+  public cart: Cart;
 
   public calculateTotalValue() {
     return Money.multiply(this.price, this.quantity);

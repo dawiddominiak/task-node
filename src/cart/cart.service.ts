@@ -9,4 +9,13 @@ export class CartService extends CRUDService<Cart> {
   constructor(respository: CartRepository) {
     super(respository);
   }
+
+  public async createNewCart(): Promise<Cart> {
+    const cart = this.repository.create({
+      products: [],
+      paid: false,
+    });
+
+    return this.repository.save(cart);
+  }
 }

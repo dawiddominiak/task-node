@@ -1,8 +1,8 @@
-import { Currency } from 'src/common/value-object/currency.enum';
-import { Money } from 'src/common/value-object/money.value-object';
-import { Ratable } from 'src/common/value-object/ratable';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Currency } from '../common/value-object/currency.enum';
+import { Money } from '../common/value-object/money.value-object';
+import { Ratable } from '../common/value-object/ratable';
 import { Product } from './product/product.entity';
 
 @Entity({})

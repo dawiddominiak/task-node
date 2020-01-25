@@ -1,13 +1,13 @@
 import { AxiosError } from 'axios';
 import * as moment from 'moment';
-import { RetryableWorker } from 'src/common/retryable-worker';
-import {
-  determineIfErrorIsIn400Group,
-} from 'src/common/retryable-worker/deny-400-group.repeat-condition';
 
 import { Inject, Injectable, Logger, LoggerService, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
+import { RetryableWorker } from '../common/retryable-worker';
+import {
+  determineIfErrorIsIn400Group,
+} from '../common/retryable-worker/deny-400-group.repeat-condition';
 import { CurrencyAdapter } from './currency.adapter';
 import {
   DAILY_UPDATE_OFFSET_IN_HOURS, UPDATE_TIMEZONE,
