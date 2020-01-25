@@ -13,6 +13,10 @@ describe('CurrencyService', () => {
           provide: 'CurrencyAdapter',
           useValue: {},
         },
+        {
+          provide: 'RatesRepository',
+          useValue: {},
+        },
     ],
     }).compile();
 
