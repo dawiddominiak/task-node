@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body, Controller, Delete, HttpCode, Param, ParseIntPipe, Post, ValidationPipe,
+} from '@nestjs/common';
 import { ApiParam } from '@nestjs/swagger';
 
 import { CartByIdPipe } from '../cart-by-id.pipe';
+import { CartNotPaidValidationPipe } from '../cart-not-paid.pipe';
 import { Cart } from '../cart.entity';
 import { ProductDto } from './product.dto';
 import { ProductMapper } from './product.mapper';
@@ -17,8 +20,8 @@ export class ProductController {
   @Post('/')
   @ApiParam({ name: 'cartId', type: String })
   public async addProduct(
-    @Param('cartId', ParseIntPipe, CartByIdPipe) cart: Cart,
-    @Body() productDto: ProductDto,
+    @Param('cartId', ParseIntPipe, CartByIdPipe, CartNotPaidValidationPipe) cart: Cart,
+    @Body(ValidationPipe) productDto: ProductDto,
   ) {
     const product = this.productMapper.toEntity(productDto);
     product.cart = cart;
@@ -29,8 +32,10 @@ export class ProductController {
   }
 
   @Delete('/:productId')
+  @HttpCode(204)
+  @ApiParam({ name: 'cartId', type: String })
   public async deleteProduct(
-    @Param('cartId', ParseIntPipe) cartId: number,
+    @Param('cartId', ParseIntPipe, CartByIdPipe, CartNotPaidValidationPipe) cart: Cart,
     @Param('productId', ParseIntPipe) productId: number,
   ) {
     await this.productService.delete(productId);

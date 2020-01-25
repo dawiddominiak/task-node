@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 import { Column } from 'typeorm';
 
+import { ApiProperty } from '@nestjs/swagger';
+
 import { Currency } from '../value-object/currency.enum';
 import { Ratable } from './ratable';
 import { ValueObject } from './value-object';
@@ -23,9 +25,17 @@ export class Money extends ValueObject {
    * Consider decimal type on productional database.
    */
   @Column({ type: 'float', name: 'price', nullable: false })
+  @ApiProperty({
+    description: 'Amount of money in the specified currency.',
+    example: 10.35,
+  })
   public readonly amount: number;
 
   @Column({ type: 'text', nullable: false })
+  @ApiProperty({
+    enum: Object.values(Currency),
+    examples: Object.values(Currency),
+  })
   public readonly currency: Currency;
 
   constructor(

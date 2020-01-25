@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CurrencyModule } from '../currency/currency.module';
 import { CartController } from './cart.controller';
 import { CartMapper } from './cart.mapper';
 import { CartRepository } from './cart.repository';
@@ -11,6 +12,7 @@ import { ProductModule } from './product/product.module';
   imports: [
     forwardRef(() => ProductModule),
     TypeOrmModule.forFeature([CartRepository]),
+    CurrencyModule,
   ],
   providers: [
     CartService,

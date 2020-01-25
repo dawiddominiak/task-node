@@ -12,6 +12,7 @@ export class ProductDto {
   @MaxLength(50)
   @ApiProperty({
     description: 'Name of the product',
+    example: 'Jeans',
   })
   public readonly name: string;
 
@@ -29,6 +30,7 @@ export class ProductDto {
   @Max(1000)
   @ApiProperty({
     description: 'Number of products in the cart.',
+    example: 1,
   })
   public readonly quantity: number;
 
@@ -36,6 +38,7 @@ export class ProductDto {
   @IsString()
   @ApiPropertyOptional({
     description: 'Description of the product on the list',
+    example: 'Blue jeans with lining.',
   })
   public readonly description: string;
 }
@@ -47,6 +50,7 @@ export class IdentifiedProductDto extends ProductDto {
     minimum: 1,
     uniqueItems: true,
     readOnly: true,
+    example: 1,
   })
   public readonly id: number;
 }

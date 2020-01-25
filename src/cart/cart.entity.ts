@@ -11,7 +11,7 @@ export class Cart {
   public readonly id: number;
 
   @Column({ type: 'boolean' })
-  public readonly paid: boolean;
+  public paid: boolean;
 
   @OneToMany(type => Product, product => product.cart, {
     eager: true,

@@ -21,5 +21,8 @@ import { RatesRepository } from './rates.repository';
       useClass: ExchangeRatesCurrencyAdapter,
     },
   ],
+  exports: [
+    CurrencyService,
+  ],
 })
 export class CurrencyModule {}
