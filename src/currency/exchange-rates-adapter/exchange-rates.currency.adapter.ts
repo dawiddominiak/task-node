@@ -7,7 +7,7 @@ import { HttpService, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { ValueError } from '../../common/error/value.error';
 import { RetryableWorker } from '../../common/retryable-worker';
 import {
-  determineIfErrorIsIn400Group,
+  determineIfErrorIsNotIn400Group,
 } from '../../common/retryable-worker/deny-400-group.repeat-condition';
 import { CurrencyAdapter } from '../currency.adapter';
 import { Rates } from '../rates.entity';
@@ -63,7 +63,7 @@ export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
         repeatOptions: {
           limit: 3,
         },
-        repeatCondition: (error: AxiosError) => determineIfErrorIsIn400Group(error, this.logger),
+        repeatCondition: (error: AxiosError) => determineIfErrorIsNotIn400Group(error, this.logger),
       },
     );
   }

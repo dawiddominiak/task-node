@@ -6,7 +6,7 @@ import { Cron } from '@nestjs/schedule';
 
 import { RetryableWorker } from '../common/retryable-worker';
 import {
-  determineIfErrorIsIn400Group,
+  determineIfErrorIsNotIn400Group,
 } from '../common/retryable-worker/deny-400-group.repeat-condition';
 import { CurrencyAdapter } from './currency.adapter';
 import {
@@ -85,7 +85,7 @@ export class CurrencyService implements OnModuleInit {
             return true;
           }
 
-          return determineIfErrorIsIn400Group(error, this.logger);
+          return determineIfErrorIsNotIn400Group(error, this.logger);
         },
       },
     );

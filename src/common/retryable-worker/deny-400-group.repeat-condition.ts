@@ -3,7 +3,7 @@ import { EOL } from 'os';
 
 import { Logger, LoggerService } from '@nestjs/common';
 
-export function determineIfErrorIsIn400Group(error: AxiosError, logger: LoggerService = new Logger()) {
+export function determineIfErrorIsNotIn400Group(error: AxiosError, logger: LoggerService = new Logger()) {
   const isAxiosError: boolean = error.isAxiosError;
   const hasErrorCode: boolean = typeof error.code === 'string' || typeof error.code === 'number';
   const errorCodeFrom4xxGroup: boolean = error.code?.toString().charAt(0) === '4';
