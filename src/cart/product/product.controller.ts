@@ -1,7 +1,7 @@
 import {
   Body, Controller, Delete, HttpCode, Param, ParseIntPipe, Post, ValidationPipe,
 } from '@nestjs/common';
-import { ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 import { CartByIdPipe } from '../cart-by-id.pipe';
 import { CartNotPaidValidationPipe } from '../cart-not-paid.pipe';
@@ -19,6 +19,9 @@ export class ProductController {
 
   @Post('/')
   @ApiParam({ name: 'cartId', type: String })
+  @ApiOperation({
+    description: 'Adds a new position to the cart.',
+  })
   public async addProduct(
     @Param('cartId', ParseIntPipe, CartByIdPipe, CartNotPaidValidationPipe) cart: Cart,
     @Body(ValidationPipe) productDto: ProductDto,
@@ -34,6 +37,9 @@ export class ProductController {
   @Delete('/:productId')
   @HttpCode(204)
   @ApiParam({ name: 'cartId', type: String })
+  @ApiOperation({
+    description: 'Removes the position from the cart.',
+  })
   public async deleteProduct(
     @Param('cartId', ParseIntPipe, CartByIdPipe, CartNotPaidValidationPipe) cart: Cart,
     @Param('productId', ParseIntPipe) productId: number,
