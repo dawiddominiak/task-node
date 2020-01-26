@@ -92,11 +92,7 @@ describe('ExchangeRatesCurrencyAdapter', () => {
     test('should throw an error', async () => {
       return expect(service.getLatestRates())
         .rejects
-        .toEqual(
-          expect.objectContaining({
-            message: expect.stringContaining('Incorrect rate object.'),
-          }),
-        );
+        .toThrowError('Incorrect rate object.');
     });
   });
 
@@ -120,11 +116,7 @@ describe('ExchangeRatesCurrencyAdapter', () => {
     test('should throw an error', async () => {
       return expect(service.getLatestRates())
         .rejects
-        .toEqual(
-          expect.objectContaining({
-            message: expect.stringContaining('Incorrect rate object.'),
-          }),
-        );
+        .toThrowError('Incorrect rate object.');
     });
   });
 
@@ -148,11 +140,7 @@ describe('ExchangeRatesCurrencyAdapter', () => {
     test('should throw an error', async () => {
       return expect(service.getLatestRates())
         .rejects
-        .toEqual(
-          expect.objectContaining({
-            message: expect.stringContaining('Incorrect date format.'),
-          }),
-        );
+        .toThrowError('Incorrect date format.');
     });
   });
 
@@ -176,11 +164,7 @@ describe('ExchangeRatesCurrencyAdapter', () => {
     test('should throw an error', async () => {
       return expect(service.getLatestRates())
         .rejects
-        .toEqual(
-          expect.objectContaining({
-            message: expect.stringContaining('base must be one of the following values'),
-          }),
-        );
+        .toThrowError('base must be one of the following values');
     });
   });
 

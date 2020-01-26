@@ -86,6 +86,8 @@ npm start
 ```
 
 ## Testing
+Unit tests are placed all over the application in `*.spec.ts` files.
+E2E tests can be found in `test` directory.
 
 Unit tests:
 ```

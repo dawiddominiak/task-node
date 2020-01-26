@@ -80,7 +80,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [
-      "<rootDir>/test/set-env-vars.ts"
+      "<rootDir>/../test/set-env-vars.ts"
     ]
   }
 }

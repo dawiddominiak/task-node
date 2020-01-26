@@ -1,7 +1,7 @@
 import * as rateLimit from 'express-rate-limit';
 import * as helmet from 'helmet';
 
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -11,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
+    whitelist: true,
     forbidNonWhitelisted: true,
   }));
   app.use(helmet({

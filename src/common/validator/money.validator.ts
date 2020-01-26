@@ -20,6 +20,18 @@ export class MoneyValidator implements ValidatorConstraintInterface {
   private getValidationErrors(money: Money, [min, max]: number[]): string[] {
     const errors: string[] = [];
 
+    if (!money?.amount) {
+      errors.push('property amount is necessary for money object');
+    }
+
+    if (!money?.currency) {
+      errors.push('property currency is necessary for money object');
+    }
+
+    if (errors.length > 0) {
+      return errors;
+    }
+
     if (money.amount < min) {
       errors.push(`amount of money lower than ${min}`);
     }
