@@ -1,6 +1,6 @@
 import { ValueTransformer } from 'typeorm';
 
-import { ValueError } from '../error/value.error';
+import { InternalServerErrorException } from '@nestjs/common';
 
 export class MapValueTransformer implements ValueTransformer {
   public to(map: Map<any, any>) {
@@ -11,7 +11,7 @@ export class MapValueTransformer implements ValueTransformer {
     try {
       return new Map(JSON.parse(value));
     } catch (err) {
-      throw new ValueError(`Error when parsing JSON ${value} from the database.`, err);
+      throw new InternalServerErrorException(`Error when parsing JSON ${value} from the database.`, err);
     }
   }
 }

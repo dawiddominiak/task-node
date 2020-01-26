@@ -56,40 +56,50 @@ export class CurrencyService implements OnModuleInit {
 
     if (!latestRates || currentMoment.diff(latestRatesMoment, 'hours') >= 24) {
       const newestRates = await this.fetchNewestCurrencies(latestRates);
-      this.logger.log(`Rates from ${moment(newestRates.date).format('YYYY-MM-DD')} downloaded.`);
-      this.ratesRepository.save(newestRates);
+      if (newestRates) {
+        this.logger.log(`Rates from ${moment(newestRates.date).format('YYYY-MM-DD')} downloaded.`);
+        await this.ratesRepository.save(newestRates);
+      }
     }
   }
 
-  private async fetchNewestCurrencies(oldRates: Rates): Promise<Rates> {
+  private async fetchNewestCurrencies(oldRates: Rates): Promise<Rates | void> {
     // Currency adapter should have retryable logic already implemented,
     // we just want to use higher resolution.
-    return RetryableWorker.run(
-      async () => {
-        const newRates = await this.currencyAdapter.getLatestRates();
+    try {
+      return RetryableWorker.run(
+        async () => {
+          const newRates = await this.currencyAdapter.getLatestRates();
 
-        if (oldRates && newRates.date.getTime() === oldRates?.date?.getTime()) {
-          throw new RatesNotUpdatedError(`Rates not updated at ${new Date()}.`);
-        }
-
-        return newRates;
-      },
-      {
-        repeatOptions: {
-          limit: RETRIES_LIMIT_OF_CURRENCIES_ADAPTER,
-          // 5s, 20s, 45s, 1m20s, 2m5s, 3m, 4m5s, ... 15m, 15m
-          msDelayFactory: (approachCounter) => Math.max((approachCounter ** 2) * 5000, 15 * 60 * 1000),
-        },
-        repeatCondition: (error: AxiosError | RatesNotUpdatedError) => {
-          if (error instanceof RatesNotUpdatedError) {
-            this.logger.warn(error.message);
-
-            return true;
+          if (oldRates && newRates.date.getTime() === oldRates?.date?.getTime()) {
+            throw new RatesNotUpdatedError(`Rates not updated at ${new Date()}.`);
           }
 
-          return determineIfErrorIsNotIn400Group(error, this.logger);
+          return newRates;
         },
-      },
-    );
+        {
+          repeatOptions: {
+            limit: RETRIES_LIMIT_OF_CURRENCIES_ADAPTER,
+            // 5s, 20s, 45s, 1m20s, 2m5s, 3m, 4m5s, ... 15m, 15m
+            msDelayFactory: (approachCounter) => Math.max((approachCounter ** 2) * 5000, 15 * 60 * 1000),
+          },
+          repeatCondition: (error: AxiosError | RatesNotUpdatedError) => {
+            if (error instanceof RatesNotUpdatedError) {
+              this.logger.warn(error.message);
+
+              return true;
+            }
+
+            return determineIfErrorIsNotIn400Group(error, this.logger);
+          },
+        },
+      );
+    } catch (error) {
+      if (error instanceof RatesNotUpdatedError) {
+        this.logger.error(`Rates not updated despite ${RETRIES_LIMIT_OF_CURRENCIES_ADAPTER} retries.`);
+      } else {
+        throw error;
+      }
+    }
   }
 }

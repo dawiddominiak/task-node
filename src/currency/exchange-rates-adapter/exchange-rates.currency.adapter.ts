@@ -2,7 +2,9 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { validate, ValidationError } from 'class-validator';
 import * as moment from 'moment';
 
-import { HttpService, Injectable, Logger, LoggerService } from '@nestjs/common';
+import {
+  HttpService, Injectable, InternalServerErrorException, Logger, LoggerService,
+} from '@nestjs/common';
 
 import { ValueError } from '../../common/error/value.error';
 import { RetryableWorker } from '../../common/retryable-worker';
@@ -44,7 +46,7 @@ export class ExchangeRatesCurrencyAdapter implements CurrencyAdapter {
         `Property ${error.property} experience the following issues. ${Object.values(error.constraints).join(', ')}`,
       );
 
-      throw new ValueError(`Unexpected response from ${EXCHANGE_RATES_URL}. ${messages.join(' ')}`);
+      throw new InternalServerErrorException(`Unexpected response from ${EXCHANGE_RATES_URL}. ${messages.join(' ')}`);
     }
 
     return new Rates(
