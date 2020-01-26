@@ -44,6 +44,31 @@ There should be a separate microservice to fetch the newest currencies.
 
 As I was limited by the product schema, I couldn't change the entity relationships. In other case I'd propose to denormalize our Product to two different entities - `Product` and `Position` in the cart. I also assumed that actor is permitted to propose the product price and currency. Productional applications should rather keep such information in the database and allow the user to only add the product ids and quantities to the cart. On the other hand, the application fit as a microservice to recalculate the price of the user cart.
 
+## Security
+
+The most important thing to protect are data and their consistency. To prevent it I did.
+
+- All endpoints validation.
+- Response validation from external API.
+- CORS.
+
+To prevent weak DDoS attacks I did:
+- Per IP rate limiter.
+
+To prevent Swagger UX users I did:
+- Hide referrer.
+- CSP.
+- X-Permitted-Cross-Domain-Policies header.
+- strict browser feature policy.
+
+#### Future must have
+- User authentication (should be relatively fast with some AuthProvider and JWT).
+- Set up Snyk or other package monitor.
+- Auto update of dependencies.
+
+#### Future ideas
+- Code compilation with tool such as Nexe.
+
 ## Prerequisites
 
 - npm@6.13.6
