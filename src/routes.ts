@@ -9,7 +9,7 @@ export const routes: Routes = [
     module: CartModule,
     children: [
       {
-        path: ':cartId/products',
+        path: ':cartId/product',
         module: ProductModule,
       },
     ],
