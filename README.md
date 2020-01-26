@@ -87,8 +87,14 @@ npm start
 
 ## Testing
 
+Unit tests:
 ```
 npm test
+```
+
+e2e tests:
+```
+npm run test:e2e
 ```
 
 ## Documentation

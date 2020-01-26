@@ -1,24 +1,27 @@
 import * as request from 'supertest';
+import { Connection } from 'typeorm';
 
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let moduleFixture: TestingModule;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+    app.useGlobalPipes(new ValidationPipe());
 
-  afterEach(async () => {
-    await app.close();
+    await app.init();
+
+    const dbConnection = moduleFixture.get(Connection);
+    await dbConnection.synchronize(true);
   });
 
   describe('/cart', () => {
@@ -28,6 +31,19 @@ describe('AppController (e2e)', () => {
         .expect(200)
         .then(({ body }) => {
           expect(body).toEqual([]);
+        });
+    });
+
+    test('/ (POST)', async () => {
+      return request(app.getHttpServer())
+        .post('/cart/')
+        .expect(201)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            id: 1,
+            paid: false,
+            products: [],
+          });
         });
     });
   });

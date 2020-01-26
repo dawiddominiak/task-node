@@ -33,7 +33,9 @@ export class CurrencyService implements OnModuleInit {
 
   // It's important to ensure newest rates before application bootstrap.
   public async onModuleInit(): Promise<void> {
-    await this.ensureNewestCurrencies();
+    if (process.env.NODE_ENV !== 'test') {
+      await this.ensureNewestCurrencies();
+    }
   }
 
   public async getLatestRates(): Promise<Rates> {
