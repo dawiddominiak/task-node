@@ -9,7 +9,7 @@ export class Product {
   public readonly id: number;
 
   @Column({ type: 'text', nullable: false })
-  private readonly name: string;
+  public readonly name: string;
 
   @Column(type => Money)
   public readonly price: Money;
@@ -18,7 +18,7 @@ export class Product {
   public readonly quantity: number;
 
   @Column({ type: 'text', nullable: true })
-  private readonly description: string;
+  public readonly description: string;
 
   @ManyToOne(type => Cart, cart => cart.products)
   public cart: Cart;

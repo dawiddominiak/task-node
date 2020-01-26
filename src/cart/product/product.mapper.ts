@@ -13,7 +13,13 @@ export class ProductMapper extends ClassMapper<Product, ProductDto> {
   public toDto(entity: Product): IdentifiedProductDto {
     return Object.assign(
       new IdentifiedProductDto(),
-      entity,
+      {
+        id: entity.id,
+        price: entity.price,
+        quantity: entity.quantity,
+        name: entity.name,
+        description: entity.description,
+      },
     );
   }
 }
