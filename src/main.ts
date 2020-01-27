@@ -1,7 +1,7 @@
 import * as rateLimit from 'express-rate-limit';
 import * as helmet from 'helmet';
 
-import { ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
+import { Logger, ValidationPipe, ValidationPipeOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -83,3 +83,13 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
+
+const logger = new Logger('Unhandled');
+
+function shutdown(error) {
+  logger.error(error);
+  process.exit(1);
+}
+
+process.on('uncaughtException', shutdown);
+process.on('unhandledRejection', shutdown);
