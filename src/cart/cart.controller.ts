@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, ValidationPipe } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 import { CartByIdPipe } from './cart-by-id.pipe';
 import { Cart } from './cart.entity';
@@ -38,6 +38,7 @@ export class CartController {
   @ApiOperation({
     description: 'Endpoint to do the checkout action, prevent cart from the future changes and calculate the amount of money in given currency.',
   })
+  @ApiParam({ name: 'cartId', type: String })
   public async checkout(
     @Param('cartId', ParseIntPipe, CartByIdPipe) cart: Cart,
     @Body(ValidationPipe) checkout: CheckoutDto,
