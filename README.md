@@ -104,6 +104,11 @@ npm run test:e2e
 Please, feel free to look at the swagger documentation on an `/api` route.
 Link for the localhost and the default port `3000` (http://localhost:3000/api).
 
+## Env
+
+`NODE_ENV` - `test` for testing purposes.
+`PORT` - default 3000.
+
 ## Author
 
 - Dawid Dominiak
